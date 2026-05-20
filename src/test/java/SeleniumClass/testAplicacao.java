@@ -31,7 +31,7 @@ public class testAplicacao {
     public void validarCheckBox() throws InterruptedException{
         WebElement checkbox = driver.findElement(By.id("java-checkbox"));
         checkbox.click();
-       // Thread.sleep(3000);     
+  
     }
 
     @Test
@@ -43,14 +43,12 @@ public class testAplicacao {
                 cb.click();
             }
         }
-        Thread.sleep(4000);
     }
 
     @Test
     public void validaRadioButton() throws InterruptedException{
         driver.findElement(By.id("junior-radio")).click();
 
-        Thread.sleep(4000);
     }
 
     @Test
@@ -62,7 +60,7 @@ public class testAplicacao {
                 rb.click();
             }
         }
-        Thread.sleep(4000);
+    
     }
 
     @Test
@@ -70,8 +68,6 @@ public class testAplicacao {
         WebElement selectLinguagem = driver.findElement(By.id("language-select"));
         Select selectOpcao = new Select(selectLinguagem);
         selectOpcao.selectByValue("csharp");
-
-        Thread.sleep(4000);
     }
     
 
