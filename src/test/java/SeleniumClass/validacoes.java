@@ -1,5 +1,7 @@
 package SeleniumClass;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,6 +66,57 @@ public class validacoes {
 
         //Validar Não exibição da mensagem de sucesso
         Assert.assertFalse(driver.findElement(By.id("success-message")).isDisplayed());
+    }
+
+    @Test
+    public void uploadArquivo() throws InterruptedException {
+        // Logar na aplicação
+        validarLoginSucesso();
+ 
+        // elemento de upload
+        WebElement botaoInput = driver.findElement(By.id("file-upload"));
+ 
+        // // Enviando o arquivo para o input
+        // Trocar o caminho
+        botaoInput.sendKeys("C:\\Users\\ermartins\\Downloads\\jornada_selenium.html");
+ 
+        // Validar se o nome do arquivo foi carregado no input
+        String nomeArquivo = botaoInput.getAttribute("value");
+ 
+        // Validar que o nome do arquivo não está vazio
+        Assert.assertFalse("Nenhum arquivo escolhido", nomeArquivo.isEmpty());
+
+        //Exercicio: Realizar a validação do nome do arquivo após o upload
+ 
+        // pausa para visualizar o resultado do upload
+        Thread.sleep(3000);
+    }
+
+    @Test
+    public void validarTabela(){
+        //Realizar login
+        validarLoginSucesso();
+
+        List<WebElement> linhas = driver.findElements(By.xpath("//table[@id=\"users-table\"]//tbody//tr"));
+
+        //Validar quantidade de linhas na tabela
+        Assert.assertEquals(2, linhas.size());
+
+        //Validar se na linha 1 tem o nome Alice
+        Assert.assertTrue(linhas.get(0).getText().contains("Alice"));
+        System.out.println("Linha 1: " + linhas.get(0).getText());
+
+        //Validando se a linha 1 tem o conteúdo esperado: Alice alice@email.com
+        Assert.assertEquals("Alice alice@email.com", linhas.get(0).getText());
+    }
+
+    @Test
+    public void validarBotaoDesabilitado(){
+        validarLoginSucesso();
+
+        WebElement botaoDesabilitado = driver.findElement(By.id("disabled-button"));
+
+        Assert.assertFalse(botaoDesabilitado.isEnabled());
     }
 
 }
