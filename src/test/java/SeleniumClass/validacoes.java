@@ -10,15 +10,22 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import SeleniumClass.pages.HomePage;
+import SeleniumClass.pages.LoginPage;
 import junit.framework.Assert;
 
 public class validacoes {
-     private final String URL = "file:///C:/Users/dfelix/Downloads/jornada_selenium.html";
+    private final String URL = "file:///C:/Users/dfelix/Downloads/jornada_selenium.html";
     private WebDriver driver;
+    private LoginPage loginPage;
+    private HomePage homePage;
+
 
     @Before
     public final void iniciar(){
         driver = new ChromeDriver();
+        loginPage = new LoginPage(driver);
+        homePage = new HomePage(driver);
         driver.get(URL);
         Assert.assertTrue(driver.findElement(By.id("page-title")).isDisplayed());
     }
@@ -45,9 +52,10 @@ public class validacoes {
     public void validarLoginSucesso(){
         //Usuário: admin
         //Senha: 123456
-        driver.findElement(By.id("login-user")).sendKeys("admin");
+        /*driver.findElement(By.id("login-user")).sendKeys("admin");
         driver.findElement(By.id("login-password")).sendKeys("123456");
-        driver.findElement(By.id("login-button")).click();
+        driver.findElement(By.id("login-button")).click();*/
+        loginPage.realizarLogin("admin","123456");
 
         //Validar se realizou login com sucesso
         
@@ -60,9 +68,10 @@ public class validacoes {
     @Test
     public void realizarLogout(){
         //Realiza o login primeiro
-        validarLoginSucesso();
+        loginPage.realizarLogin("admin", "123456");
 
-        driver.findElement(By.xpath("//button[@id=\"logout-button\"]")).click();
+        //driver.findElement(By.xpath("//button[@id=\"logout-button\"]")).click();
+        homePage.clicarEmLogout();
 
         //Validar Não exibição da mensagem de sucesso
         Assert.assertFalse(driver.findElement(By.id("success-message")).isDisplayed());
@@ -117,6 +126,14 @@ public class validacoes {
         WebElement botaoDesabilitado = driver.findElement(By.id("disabled-button"));
 
         Assert.assertFalse(botaoDesabilitado.isEnabled());
+    }
+
+    @Test
+    public void realizarLoginSenhaErrada(){
+        loginPage.realizarLogin("admin", "123");
+
+        //Validar exibição da mensagem de erro
+        Assert.assertTrue(driver.findElement(By.id("login-result")).isDisplayed());
     }
 
 }
